@@ -17,8 +17,12 @@
 	return [self imageTintedWithColor:color fraction:0.0]; // default to a fully tinted mask of the image.
 }
 
-
 - (UIImage *)imageTintedWithColor:(UIColor *)color fraction:(CGFloat)fraction
+{
+    return [self imageTintedWithColor:color fraction:fraction blendMode:kCGBlendModeDestinationIn];
+}
+    
+- (UIImage *)imageTintedWithColor:(UIColor *)color fraction:(CGFloat)fraction blendMode:(CGBlendMode)blendMode
 {
 	if (color) {
 		// Construct new image the same size as this one.
@@ -41,7 +45,7 @@
 		
 		// Mask tint color-swatch to this image's opaque mask.
 		// We want behaviour like NSCompositeDestinationIn on Mac OS X.
-		[self drawInRect:rect blendMode:kCGBlendModeDestinationIn alpha:1.0];
+		[self drawInRect:rect blendMode:blendMode alpha:1.0];
 		
 		// Finally, composite this image over the tinted mask at desired opacity.
 		if (fraction > 0.0) {
